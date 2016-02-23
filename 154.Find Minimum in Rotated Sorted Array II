@@ -1,3 +1,5 @@
+# 2016-02-22  Runtime: 48 ms  43.62%
+#存在重复元素 Eg:[10,1,10,10,10] or  [10,10,10,2,10]
 class Solution(object):
     def findMin(self, nums):
         L,R=0,len(nums)-1
