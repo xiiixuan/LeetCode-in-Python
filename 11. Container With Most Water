@@ -1,0 +1,14 @@
+# 2016-02-22  Runtime: 100 ms  9.50%
+#用两个指针从两端开始向中间靠拢，如果左端线段短于右端，那么左端右移，反之右端左移
+#直到左右两端移到中间重合，记录这个过程中每一次组成木桶的容积，返回其中最大的。
+class Solution(object):
+    def maxArea(self, height):
+      i,j=0,len(height)-1
+      result=min(height[i],height[j])*(j-i)
+      while i<j:
+        if height[i]<height[j]:
+          i+=1
+        else:
+          j-=1
+        result=max(result,min(height[i],height[j])*(j-i))
+      return result
