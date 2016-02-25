@@ -1,0 +1,19 @@
+# 2016-02-24  Runtime: 104 ms  61.25%
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        candidates.sort()
+        result=[]
+        self.combination(candidates,target,result,[],0)
+        return result
+    def combination(self,candidates,target,result,current,start):
+        if target==0:
+            result.append(current)
+        else:
+            while start<len(candidates) and candidates[start]<=target:
+                self.combination(candidates,target-candidates[start],result,current+[candidates[start]],start)
+                start+=1
