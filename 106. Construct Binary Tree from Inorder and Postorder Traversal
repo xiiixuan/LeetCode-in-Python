@@ -1,0 +1,28 @@
+# 2016-02-24  Runtime: 64 ms  98.57%
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        """
+        :type inorder: List[int]
+        :type postorder: List[int]
+        :rtype: TreeNode
+        """
+        lookup = {}
+        for i in range(len(inorder)):
+            lookup[inorder[i]] = i 
+        return self.buildTreeRecur(lookup, postorder, inorder, 0, len(postorder) - 1, len(postorder) - 1)
+        
+    def buildTreeRecur(self, lookup, postorder, inorder, in_start, in_end, pre_start):
+        if in_start > in_end:
+            return None
+        current = TreeNode(postorder[pre_start])
+        i = lookup[postorder[pre_start]]
+        current.left = self.buildTreeRecur(lookup, postorder, inorder, in_start, i - 1, pre_start + i - in_end - 1)
+        current.right = self.buildTreeRecur(lookup, postorder, inorder, i + 1, in_end, pre_start - 1)
+        return current
