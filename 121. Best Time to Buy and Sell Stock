@@ -1,0 +1,14 @@
+# 2016-02-25  Runtime: 60 ms  29.34%
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        maxpri=0
+        minpri=sys.maxint
+        for i in prices:
+            minpri=min(minpri,i)
+            maxpri=max(maxpri,i-minpri)
+        return maxpri
+
