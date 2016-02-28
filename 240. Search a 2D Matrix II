@@ -1,0 +1,23 @@
+# 2016-02-28  Runtime: 112 ms  
+# Binary search
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if matrix is None or len(matrix)==0:
+            return 0
+        m,n=len(matrix),len(matrix[0])
+        num,a,b=0,m-1,0
+        while 0<=a<m and 0<=b<n:
+            result=matrix[a][b]
+            if target>result:
+                b+=1
+            elif target<result:
+                a-=1
+            else:
+                return True
+        return False
+        
