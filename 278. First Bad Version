@@ -1,0 +1,21 @@
+# 2016-02-28  Runtime: 44 ms
+# Binary rearch
+class Solution(object):
+    def firstBadVersion(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n==0:
+            return True
+        start,end=1,n
+        while start+1<end:
+            m=(start+end)/2
+            if isBadVersion(m) is True:
+                end=m
+            else:
+                start=m
+        if isBadVersion(start) is True:
+            return start
+        else:
+            return end
