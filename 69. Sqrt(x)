@@ -1,0 +1,23 @@
+# 2016-02-25  Runtime: 64 ms  
+#Binary search
+class Solution(object):
+    def mySqrt(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        if x<0:
+            return False
+        start,end=0,x
+        while start+1<end:
+            m=(start+end)/2
+            if m*m<x:
+                start=m
+            elif m*m>x:
+                end=m
+            else:
+                return m
+        if end*end<=x:
+            return end
+        else:
+            return start
