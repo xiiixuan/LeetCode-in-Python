@@ -1,0 +1,54 @@
+# 2016-03-26
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    TreeNode pre=null;
+    public boolean isValidBST(TreeNode root) {
+        // write your code here
+        if(root==null){
+            return true;
+        }
+        if(root !=null){
+            //中序遍历 先来左边
+            if(! isValidBST(root.left)) return false;
+            //判断是否为升序
+            if(pre!=null && pre.val>=root.val) return false;
+        
+            //pre不断的向后移
+            pre=root;
+            //中序遍历 右边
+            return isValidBST(root.right);
+        }
+        return true;
+    }
+}
+
+
+// //初级中序遍历
+// public class Solution {  
+//     List<Integer> list = new ArrayList<Integer>();  
+      
+//     public boolean isValidBST(TreeNode root) {  
+//         if (root == null) return true;  
+//         if (root.left == null && root.right == null) return true;  
+//         inOrderTraversal(root);  
+//         for (int i = 1; i < list.size(); i++) {  
+//             if (list.get(i) <= list.get(i - 1)) return false;  
+//         }  
+//         return true;  
+//      }  
+      
+//     public void inOrderTraversal(TreeNode root) {  
+//         if (root == null) return;  
+//         inOrderTraversal(root.left);  
+//         list.add(root.val);  
+//         inOrderTraversal(root.right);  
+//     }  
+// }  
