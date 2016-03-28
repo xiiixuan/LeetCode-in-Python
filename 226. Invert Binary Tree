@@ -1,0 +1,40 @@
+# 2016-03-27
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+//Non-reursion    
+    // public TreeNode invertTree(TreeNode root) {
+    //     Queue<TreeNode> q=new LinkedList<>();
+    //     if (root!=null){
+    //         q.offer(root);
+    //     }
+    //     while(!q.isEmpty()){
+    //         TreeNode cur=q.poll();
+    //         TreeNode tem=cur.right;
+    //         cur.right=cur.left;
+    //         cur.left=tem;
+    //         if(cur.left !=null) q.offer(cur.left);
+    //         if(cur.right !=null) q.offer(cur.right);
+    //     }
+    //     return root;
+    // }
+//recursion
+    public TreeNode invertTree(TreeNode root) {
+        if(root==null){
+            return root;
+        }
+        TreeNode tem=root.right;
+        root.right=root.left;
+        root.left=tem;
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
+    }
+}
