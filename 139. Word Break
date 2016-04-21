@@ -1,0 +1,31 @@
+# 2016-04-20
+public class Solution {
+    public boolean wordBreak(String s, Set<String> dict) {
+        // write your code here 
+        if (s== null || s.length() == 0 ) {
+            return true;
+        }
+        int maxl = maxlength(dict);
+        int n = s.length();
+        boolean[] f =  new boolean[n+1];
+        f[0] = true;
+        
+        for (int i=1; i <= n; i++) {
+            f[i] =false;
+            for (int j =1; j <= maxl && j <= i; j++) {
+                if (f[i-j] == true &&  dict.contains(s.substring(i-j,i))) {
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+        return f[n];
+    }
+    private static int maxlength(Set<String> dict) {
+        int maxl = Integer.MIN_VALUE;
+        for (String word : dict) {
+            maxl = Math.max(maxl, word.length());
+        }
+        return maxl;
+    }
+}
