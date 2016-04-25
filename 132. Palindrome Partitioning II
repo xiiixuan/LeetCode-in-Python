@@ -1,0 +1,35 @@
+# 2016-04-24
+public class Solution {
+    public int minCut(String s) {
+        if (helperPalindrome(s)) {
+            return 0;
+        }
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        int m = s.length();
+        
+        int[] f = new int[m+1]; 
+        for (int i=0; i<=m; i++) {
+            f[i] = i-1;
+        }
+        
+        for (int i =1; i <= m; i++) {
+            for (int j = 0; j<i; j++) {
+                if (helperPalindrome(s.substring(j,i))) {
+                    f[i] = Math.min(f[i],f[j]+1);
+                }
+            }
+        }
+        return f[m];
+    }
+    private boolean helperPalindrome(String s) {
+        int m = s.length();
+        for (int i=0; i<m; i++) {
+            if(s.charAt(i) != s.charAt(m-i-1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
