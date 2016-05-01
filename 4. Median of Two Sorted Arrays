@@ -1,0 +1,34 @@
+# 2016-04-30
+public class Solution {
+    public double findMedianSortedArrays(int[] A, int[] B) {
+        int m = A.length + B.length;
+        if (m%2 ==1) {
+            return findkth(A, 0, B, 0, m/2+1);
+        }else {
+            return (findkth(A, 0, B, 0, m/2)+ findkth(A, 0, B, 0, m/2+1))/2.0;
+        }
+    }
+    private double findkth(int[] A,int A_start, int[] B, int B_start, int k) {
+        if (A.length <= A_start) {
+            return B[k-1+B_start];
+        }
+        if (B.length <= B_start) {
+            return A[k-1+A_start];
+        }
+        if (k==1) {
+            return Math.min(A[A_start],B[B_start]);
+        }
+        int A_key = A_start + k / 2 - 1 < A.length
+		            ? A[A_start + k / 2 - 1]
+		            : Integer.MAX_VALUE;
+		int B_key = B_start + k / 2 - 1 < B.length
+		            ? B[B_start + k / 2 - 1]
+		            : Integer.MAX_VALUE; 
+		
+        if (A_key < B_key) {
+            return findkth(A, A_start+k/2, B, B_start, k-k/2);
+        }else {
+            return findkth(A, A_start, B, B_start+k/2, k-k/2);
+        }
+    }
+}
