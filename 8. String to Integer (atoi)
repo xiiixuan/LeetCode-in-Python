@@ -1,0 +1,43 @@
+# 2016-06-25
+public class Solution {
+    public int myAtoi(String str) {
+        int result = 0;
+        int a = 0;
+        int negetive = 0;
+        if (str.length()==0 || str == null) {
+            return 0;
+        }
+        while (str.charAt(a) == ' ') {
+                a++;
+        }
+        if(str.charAt(a) == '-'){
+            negetive = 1;
+            a++;
+        }else if (str.charAt(a) == '+'){
+            negetive = 0;
+            a++;
+        }
+        for (int i = a; i < str.length(); i++) {
+            if ((str.charAt(i) - '0') <= 9 && (str.charAt(i)-'0') >= 0) {
+                int temp = result *10 + (str.charAt(i) - '0');
+                if (temp / 10 != result || temp % 10 != str.charAt(i)-'0') {
+                    if(negetive ==1) {
+                        result = Integer.MIN_VALUE;
+                    }else {
+                        result = Integer.MAX_VALUE;
+                    }
+                    break;
+                }
+                result = temp;
+            }else if (str.charAt(i) == '.') {
+                break;
+            }else {
+                break;
+            }
+        }
+        if ( negetive ==1) {
+            return -result;
+        }
+        return result;
+    }
+}
