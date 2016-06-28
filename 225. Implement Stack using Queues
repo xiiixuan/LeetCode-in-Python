@@ -1,0 +1,47 @@
+# 2016-06-27
+class MyStack {
+    // Push element x onto stack.
+    public Queue<Integer> q1 = new LinkedList<>();
+    public Queue<Integer> q2 = new LinkedList<>();
+    
+    
+    private void swapTwoQueues() {
+        Queue<Integer> temp = q1;
+        q1 = q2;
+        q2 = temp;
+    }
+    private void moveItems() {
+        while (q1.size() != 1) {
+            q2.offer(q1.poll());
+        }
+    }
+    
+    public void push(int x) {
+        // Write your code here
+        q1.offer(x);
+    }
+
+    // Pop the top of the stack
+    public void pop() {
+        // Write your code here
+        moveItems();
+        q1.poll();
+        swapTwoQueues();
+    }
+
+    // Return the top of the stack
+    public int top() {
+        // Write your code here
+        moveItems();
+        int value = q1.poll();
+        swapTwoQueues();
+        q1.offer(value);
+        return value;
+    }
+
+    // Check the stack is empty or not.
+    public boolean empty() {
+        // Write your code here
+        return q1.isEmpty();
+    }    
+}
