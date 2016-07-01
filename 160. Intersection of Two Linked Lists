@@ -1,0 +1,36 @@
+# 2016-07-01
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // Write your code here
+        ListNode node = headA;
+        if (headA == headB) return headA;
+        if (headA == null || headB == null) {
+            return null;
+        }
+        while(node.next != null) {
+            node = node.next;
+        }
+        node.next = headB;
+        ListNode result = ListCycle2(headA);
+        node.next = null;
+        return result;
+    
+    }
+    private ListNode ListCycle2(ListNode head) {
+        ListNode slow = head, fast = head.next;
+        while(slow != fast) {
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        slow = slow.next;
+        while (head != slow) {
+            head = head.next;
+            slow = slow.next;
+        }
+        return head;
+    }
+}
