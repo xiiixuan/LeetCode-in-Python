@@ -1,0 +1,29 @@
+# 2016-07-05
+public class Solution {
+    public int maxProfit(int[] prices) {
+        //preProfit:left profit form 0 to i
+        int[] left = new int[prices.length];
+        int min = Integer.MAX_VALUE;
+        int preProfit = 0;
+        for (int i = 0; i < prices.length; i++) {
+            min = Math.min(min, prices[i]);
+            preProfit = Math.max(preProfit, prices[i] - min);
+            left[i] = preProfit;
+        }
+        
+        //postProfit:right profit from prices.length to i
+        int[] right = new int[prices.length];
+        int max = Integer.MIN_VALUE;
+        int postProfit = 0;
+        for (int i = prices.length - 1; i >= 0; i--) {
+            max = Math.max(max, prices[i]);
+            postProfit = Math.max(postProfit, max - prices[i]);
+            right[i] = postProfit;
+        }
+        int result = 0;
+        for (int i = 0; i < prices.length; i++) {
+            result = Math.max(result, left[i] + right[i]);
+        }
+        return result;
+    }
+}
