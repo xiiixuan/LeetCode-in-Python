@@ -1,0 +1,57 @@
+# 2016-07-09
+public class LRUCache {
+    int capacity;
+    HashMap<Integer,DoubleNode> map = new HashMap<>();
+    DoubleNode head = new DoubleNode(-1, -1);
+    DoubleNode tail = new DoubleNode(-1, -1);
+    
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        head.pre = tail;
+        tail.next = head;
+    }
+    
+    public int get(int key) {
+        if ( !map.containsKey(key)) {
+            return -1;
+        }
+        DoubleNode point = map.get(key);
+        point.pre.next = point.next;
+        point.next.pre = point.pre;
+        moveHead(point);
+        return map.get(key).value;
+    }
+    
+    public void set(int key, int value) {
+        if (get(key) != -1) {
+            map.get(key).value = value;
+            return;
+        }
+        if (map.size() == capacity) {
+            map.remove(tail.next.key);
+            tail.next = tail.next.next;
+            tail.next.pre = tail;
+        }
+        DoubleNode insert = new DoubleNode(key, value);
+        map.put(key, insert);
+        moveHead(insert);
+    }
+    private void moveHead(DoubleNode point) {
+        point.pre = head.pre;
+        head.pre = point;
+        point.pre.next = point;
+        point.next = head;
+    }
+}
+class DoubleNode{
+    DoubleNode pre;
+    DoubleNode next;
+    int key;
+    int value;
+    public DoubleNode(int key, int value){
+        this.key = key;
+        this.value = value; 
+        this.pre = null;
+        this.next = null;
+    }
+}
