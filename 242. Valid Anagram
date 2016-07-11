@@ -1,0 +1,14 @@
+# 2016-07-10
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        
+        char[] temp =s.toCharArray();
+        Arrays.sort(temp);
+        s = String.copyValueOf(temp);
+        temp = t.toCharArray();
+        Arrays.sort(temp);
+        t = String.copyValueOf(temp);
+        return s.equals(t);
+        
+    }
+}
