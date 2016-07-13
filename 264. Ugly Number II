@@ -1,0 +1,34 @@
+# 2016-07-12
+public class Solution {
+    public int nthUglyNumber(int n) {
+        ArrayList<Integer> ugly = new ArrayList<>();
+        ugly.add(1);
+        int cur = 2;
+        int p1 = 0, p2 = 0, p3 = 0;
+        int min1, min2, min3;
+        for (int i = 1; i < n; i++) {
+            while(ugly.get(p1) * 2 < cur) {
+                p1++;
+            }
+            min1 = ugly.get(p1) * 2;
+            
+            while(ugly.get(p2) * 3 < cur) {
+                p2++;
+            }
+            min2 = ugly.get(p2) * 3;
+            
+            while(ugly.get(p3) * 5 < cur) {
+                p3++;
+            }
+            min3 = ugly.get(p3) * 5;
+            
+            int next = min1<min2? min1 : min2;
+            next = next < min3 ? next : min3;
+
+            cur = next + 1;
+            ugly.add(next);
+        }
+
+        return ugly.get(n-1);
+    }
+}
