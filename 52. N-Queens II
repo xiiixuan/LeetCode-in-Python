@@ -1,0 +1,45 @@
+# 2016-07-18
+public class Solution {
+    public int totalNQueens(int n) {
+    
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> A = new ArrayList<>();
+        
+        if (n <= 0) {
+            return 0;
+        }
+        
+        helper(n, A, result);
+        return result.size();
+    }
+    private void helper(int n, List<Integer> A, 
+                        List<List<Integer>> result) {
+        if (A.size() == n) {
+            result.add(A);
+            return;
+        }
+        for (int i = 0; i < n; i++) {
+            if (!isValid(A, i)) {
+                continue;
+            }
+            
+            A.add(i);
+            helper(n, A, result);
+            A.remove(A.size() - 1);
+        }
+    }
+    //表示判断根据目前情况，在棋盘中，第A.size()行， 第column列能不能放Queen
+    private boolean isValid(List<Integer> A, int column) {
+        int row = A.size();
+        for (int i = 0; i < row; i++) {
+            if (A.get(i) == column) {
+                return false;
+            }
+            if (row - i == Math.abs(column - A.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+}
