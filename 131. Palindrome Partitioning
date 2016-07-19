@@ -1,0 +1,39 @@
+# 2016-07-18
+public class Solution {
+    public List<List<String>> partition(String s) {
+        List<String> list = new ArrayList<>();
+        List<List<String>> result = new ArrayList<>();
+        helper(s, list, result, 0);
+        return result;
+    }
+    private void helper(String s,List<String> list, 
+                        List<List<String>> result, int position) {
+        if (position == s.length()) {
+            result.add(new ArrayList<String>(list));
+            return;
+        }
+        for (int i = position; i < s.length(); i++) {
+            if (!isPalindrome(s.substring(position,i+1))) {
+                continue;
+            }
+            list.add(s.substring(position, i + 1));
+            helper(s, list, result, i+1) ;
+            list.remove(list.size() - 1);
+        }
+    }
+    private boolean isPalindrome(String s) {
+        // Write your code here
+        int beg = 0;
+        int end = s.length() - 1;
+        while (beg < end) {
+            if (s.charAt(beg) != s.charAt(end)) {
+                return false;
+            }
+
+            beg++;
+            end--;
+        }
+
+        return true;
+    }
+}
