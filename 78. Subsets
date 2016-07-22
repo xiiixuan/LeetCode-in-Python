@@ -1,0 +1,29 @@
+# 2016-07-21
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result =  new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return result;
+        }
+        
+        Arrays.sort(nums);
+        ArrayList<Integer> list = new ArrayList<>();
+        result.add(new ArrayList<Integer>());
+        help(nums, list, result, 0);
+        return result;
+    }
+    private void help(int[] nums, ArrayList<Integer> list, List<List<Integer>> result, int begin) {
+        if (!result.contains(list) ) {
+            result.add(new ArrayList<Integer>(list));
+            
+        }
+        for (int i = begin; i < nums.length; i++) {
+            if(list.contains(nums[i])) {
+                continue;
+            }
+            list.add(nums[i]);
+            help(nums, list, result, i);
+            list.remove(list.size() - 1);
+        }
+    }
+}
