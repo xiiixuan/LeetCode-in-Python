@@ -1,0 +1,34 @@
+# 2016-07-21
+public class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length == 0) {
+            return result;
+        }
+        
+        result.add(new ArrayList<Integer>());
+        Arrays.sort(nums);
+        
+        List<Integer> subset = new ArrayList<>();
+       
+        helper(nums, subset, result, 0);
+        
+        return result;
+    }
+    private void helper(int[] nums, List<Integer> subset, List<List<Integer>> result, int begin) {
+        if (!result.contains(subset)) {
+            result.add(new ArrayList<Integer>(subset));
+        }
+        
+        for (int i = begin; i < nums.length; i++) {
+            //当前begin，即使跟前面一样，算是新加的，在这轮中，之后再有跟begin一样的都不算了，只要begin的那一个
+            if (i != begin && nums[i] == nums[i - 1] ) {
+                continue;
+            }
+            
+            subset.add(nums[i]);
+            helper(nums, subset, result, i + 1);
+            subset.remove(subset.size() - 1);
+        }
+    }
+}
