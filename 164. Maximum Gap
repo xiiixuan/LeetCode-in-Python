@@ -1,0 +1,60 @@
+# 2016-08-14
+public class Solution {
+    public int maximumGap(int[] nums) {
+    //     //暴力算法
+    //     if (nums == null || nums.length <= 1) {
+    //         return 0;
+    //     }
+    //     Arrays.sort(nums);
+    //     int result = Integer.MIN_VALUE;
+    //     for (int i = 1; i < nums.length; i++) {
+    //         result = Math.max(result, nums[i] - nums[i - 1]);
+    //     }
+    //     return result;
+    // }
+        //桶排序 (Bucket sort)
+        if (nums == null || nums.length <= 1) {
+            return 0;
+        }
+        //找到所有数组中最小值，最大值
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 0; i < nums.length; i++) {
+            min = Math.min(min, nums[i]);
+            max = Math.max(max, nums[i]);
+        }
+        if(nums.length == 2)  return (max - min);  
+        // len: 最大的差值至少为len
+        int len = (int) Math.ceil((double)(max -  min) / (nums.length - 1));
+        if (len == 0) return 0;
+        //桶内数的最大差 向上取整 注意里面一定要先换算成double 要不就先向下取整了（int型除法）  
+        // n 为桶的个数
+        int n = (max -  min) / len + 1;
+        
+        //两个数组 分别放每个桶中的最小值，最大值
+        int[] bmin = new int[n];
+        int[] bmax = new int[n];
+        Arrays.fill(bmin, Integer.MAX_VALUE);
+        Arrays.fill(bmax, Integer.MIN_VALUE);
+        
+        for (int i = 0; i < nums.length; i++) {
+            //将每个数放到不同的桶中
+            int index = (nums[i] - min) / len;
+            bmin[index] = Math.min(bmin[index], nums[i]);
+            bmax[index] = Math.max(bmax[index], nums[i]);
+        }
+        
+        //结果则为 max (bmin[i] - bmax[最近的非空桶])
+        int result = Integer.MIN_VALUE;
+        int pre = bmax[0]; //bmax[0] 里面肯定有值，至少放了min
+        for (int i = 1; i < n; i++) {
+            if(bmin[i] == Integer.MAX_VALUE && bmax[i] == Integer.MIN_VALUE) {
+                continue; //跳过空桶
+            }
+            result = Math.max(result,bmin[i] - pre);
+            pre = bmax[i];
+        }
+        return result;
+    }
+}
