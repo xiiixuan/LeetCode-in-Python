@@ -1,0 +1,26 @@
+# 2016-08-14
+public class Solution {
+    public void wiggleSort(int[] nums) {
+        if (nums == null || nums.length == 0 || nums.length == 1) {
+            return;
+        }
+        Arrays.sort(nums);
+        //排序后的最大的数， 从后往前分别放在偶数位(index为奇数)
+        int bigger = nums.length - 1;
+        //排序后，除了放在偶数位的nums.length/2个剩下的,因为表示的是index再减1
+        int smaller = nums.length - nums.length / 2 - 1; 
+        int[] result = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (i % 2 == 1){
+                result[i] = nums[bigger];
+                bigger--;
+            }else {
+                result[i] = nums[smaller];
+                smaller--;
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = result[i];
+        }
+    }
+}
