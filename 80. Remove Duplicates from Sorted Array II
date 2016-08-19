@@ -1,0 +1,23 @@
+# 2016-08-18
+public class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums == null) {
+            return 0;
+        }
+        if (nums.length <= 2) {
+            return nums.length;
+        }
+        int size = 1;
+        for(int i = 2; i < nums.length; i++) {
+            if(nums[i] != nums[size]) {
+                nums[++size] = nums[i];
+            }else {
+                if (nums[size - 1] != nums[size]) {
+                    nums[++size] = nums[i];
+                }
+            }
+        }
+        return size + 1;
+    
+    }
+}
