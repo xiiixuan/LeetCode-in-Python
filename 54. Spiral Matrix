@@ -1,0 +1,53 @@
+# 2016-08-25
+public class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+        if(matrix == null || matrix.length == 0){
+           return result; 
+        } 
+        
+        int m = matrix.length; //行数
+        int n = matrix[0].length; //列数
+        
+        int x = 0, y = 0;
+        
+        while (m > 0 && n > 0) {
+            // 剩下的部分，如果只有一行或者一列
+            if (m == 1) {
+                for (int i = 0; i < n; i++) {
+                    result.add(matrix[x][y++]);
+                }
+                break;
+            }
+            if (n == 1) {
+                for (int i = 0; i < m; i++) {
+                    result.add(matrix[x++][y]);
+                }
+                break;
+            }
+            //四个方向开始circle
+            //从左到右
+            for (int i = 0; i < n - 1; i++) {
+                result.add(matrix[x][y++]);
+            }
+            //从上到下
+            for (int i = 0; i < m - 1; i++) {
+                result.add(matrix[x++][y]);
+            }
+            //从右到左
+            for (int i = 0; i < n - 1; i++) {
+                result.add(matrix[x][y--]);
+            }
+            //从下到上
+            for (int i = 0; i < m - 1; i++) {
+                result.add(matrix[x--][y]);
+            }
+            //循环完一圈了
+            x++;
+            y++;
+            m = m - 2;
+            n = n - 2;
+        }
+        return result;
+    }
+}
