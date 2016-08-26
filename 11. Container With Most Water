@@ -1,4 +1,33 @@
+# 2016-08-25
 # 2016-02-22  Runtime: 100 ms  9.50%
+//Java版本
+public class Solution {
+    public int maxArea(int[] heights) {
+        if (heights == null || heights.length < 2) {
+            return 0;
+        }
+        int left = 0, right = heights.length - 1;
+        int result = 0;
+        while (left < right) {
+            result = Math.max(result, Math.min(heights[left], heights[right]) * (right - left));
+            if (heights[left] < heights[right]) {
+                int k = left;
+                while (k < right && heights[k] <= heights[left]) {
+                    k++;
+                }
+                left = k;
+            }else {
+                int k = right;
+                while (k > left && heights[k] <= heights[right]){
+                    k--;
+                }
+                right = k;
+            }
+        }
+        return result;
+    }
+}
+//Python版本
 #用两个指针从两端开始向中间靠拢，如果左端线段短于右端，那么左端右移，反之右端左移
 #直到左右两端移到中间重合，记录这个过程中每一次组成木桶的容积，返回其中最大的。
 class Solution(object):
