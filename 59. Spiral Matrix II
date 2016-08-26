@@ -1,0 +1,36 @@
+# 2016-08-25
+public class Solution {
+    public int[][] generateMatrix(int n) {
+        // Write your code here
+        int[][] A = new int[n][n];
+        if(n <= 0) {
+            return A;
+        }
+        int x = 0, y = 0;
+        int value = 1;
+        while(n > 0) {
+            if(n == 1) {
+                for (int i = 0; i < n; i++) {
+                    A[x][y++] = value++;
+                }
+                break;
+            }
+            for(int i = 0; i < n - 1; i++) {
+                A[x][y++] = value++;
+            }
+            for(int i = 0; i < n - 1; i++) {
+                A[x++][y] = value++;
+            }
+            for(int i = 0; i < n - 1; i++) {
+                A[x][y--] = value++;
+            }
+            for(int i = 0; i < n - 1; i++) {
+                A[x--][y] = value++;
+            }
+            x++;
+            y++;
+            n = n - 2;
+        }
+        return A;
+    }
+}
