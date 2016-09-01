@@ -10,6 +10,6 @@ public class Solution {
         for (int i = 2; i <= A.length; i++) {
             f[i % 2] = Math.max(f[(i - 1) % 2], f[(i - 2) % 2] + A[i - 1]);
         }
-        return Math.max(f[0], f[1]);
+        return f[A.length % 2];
     }
 }
