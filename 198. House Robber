@@ -1,0 +1,15 @@
+# 2016-08-31
+public class Solution {
+    public int rob(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        int[] f = new int[2];
+        f[0] = 0;
+        f[1] = A[0];
+        for (int i = 2; i <= A.length; i++) {
+            f[i % 2] = Math.max(f[(i - 1) % 2], f[(i - 2) % 2] + A[i - 1]);
+        }
+        return Math.max(f[0], f[1]);
+    }
+}
