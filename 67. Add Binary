@@ -1,0 +1,30 @@
+# 2016-08-31
+public class Solution {
+    public String addBinary(String a, String b) {
+        if (a.length() < b.length()) {
+            String temp = a;
+            a = b;
+            b = temp;
+        }
+        int alen = a.length() - 1;
+        int blen = b.length() - 1;
+        String s = "";
+        int carry = 0;
+        while (blen >= 0) {
+            int sum = (a.charAt(alen) - '0') + (b.charAt(blen) - '0') + carry;
+            s = String.valueOf(sum % 2) + s; //表示没产生一个数是放到前面
+            carry = sum / 2;
+            alen--;
+            blen--;
+        }
+        while (alen >= 0) {
+            int sum = (a.charAt(alen) - '0') + carry;
+            s = String.valueOf(sum % 2) + s; //表示没产生一个数是放到前面
+            carry = sum / 2;
+            alen--;
+        }
+        if (carry == 1)
+            s = "1" + s;
+        return s;
+    }
+}
