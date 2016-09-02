@@ -1,0 +1,44 @@
+# 2016-09-01
+public class Solution {
+    int[][] dp;
+    int[][] flag;
+    int n;
+    int m;
+    public int longestIncreasingPath(int[][] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        n = A.length;
+        m = A[0].length;
+        dp = new int[n][m];
+        flag = new int[n][m];
+        int result = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                dp[i][j] = search(A, i, j);
+                result = Math.max(result, dp[i][j]);
+            }
+        }
+        return result;
+    }
+    public int search(int[][] A, int x, int y) {
+        int result = 1;
+        if (flag[x][y] == 1) {
+            return dp[x][y];
+        }
+        int[] dx = new int[] {0, 1, 0, -1};
+        int[] dy = new int[] {1, 0, -1, 0};
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                if (A[x][y] > A[nx][ny]) {
+                    result = Math.max (result, search(A, nx, ny) + 1);
+                }
+            }
+        }
+        flag[x][y] = 1;
+        dp[x][y] = result;
+        return result;
+    }
+}
