@@ -1,15 +1,60 @@
 # 2016-09-03
 public class Solution {
+    // public int kthSmallest(int[][] matrix, int k) {
+    //     PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    //     for(int i = 0; i < matrix.length; i++) {
+    //         for (int j = 0; j < matrix[i].length; j++) {
+    //             minHeap.offer(matrix[i][j]);
+    //         }
+    //     }
+    //     for (int i = 0; i < k - 1; i++) {
+    //         minHeap.poll();
+    //     }
+    //     return minHeap.poll();
+    // }
+    //优化
     public int kthSmallest(int[][] matrix, int k) {
-        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        for(int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                minHeap.offer(matrix[i][j]);
+        Comparator<Number> newOrder = new Comparator<Number>() {
+            public int compare(Number n1, Number n2) {
+                return n1.val - n2.val;
+            }
+        };
+        boolean[][] visit = new boolean[matrix.length][matrix[0].length];
+        
+        PriorityQueue<Number> minHeap = new PriorityQueue<Number>(k, newOrder);
+        Number smallest = new Number(0, 0, matrix[0][0]);
+        minHeap.offer(smallest);
+        int[] dx = new int[] {0, 1};
+        int[] dy = new int[] {1, 0};
+        for(int i = 0; i < k - 1; i++) {
+            smallest = minHeap.poll();
+            for (int j = 0; j < 2; j++) {
+                int nx = smallest.x + dx[j];
+                int ny = smallest.y + dy[j];
+                if (!valid(matrix, nx, ny, visit)) {
+                    continue;
+                }
+                minHeap.offer(new Number(nx, ny, matrix[nx][ny]));
+                visit[nx][ny] = true;
             }
         }
-        for (int i = 0; i < k - 1; i++) {
-            minHeap.poll();
+        return minHeap.poll().val;
+    }
+    public boolean valid(int[][] matrix, int x, int y, boolean[][] visit) {
+        if (x < matrix.length && y < matrix[0].length && !visit[x][y]) {
+            return true;
         }
-        return minHeap.poll();
+        return false;
+    }
+}
+
+class Number {
+    int x;
+    int y;
+    int val;
+    public Number(int x, int y, int val) {
+        this.x = x;
+        this.y = y;
+        this.val = val;
     }
 }
