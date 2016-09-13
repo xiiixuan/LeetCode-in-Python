@@ -1,0 +1,60 @@
+# 2016-09-12
+class TrieNode {
+    TrieNode[] child;
+    boolean isWord;
+    public TrieNode() {
+        child = new TrieNode[26];
+        isWord = false;
+    }
+}
+public class WordDictionary {
+
+    // Adds a word into the data structure.
+    TrieNode root;
+    public WordDictionary() {
+        root = new TrieNode();
+    }
+    public void addWord(String word) {
+        // Write your code here
+        TrieNode now = root;
+        for (int i = 0; i < word.length(); i++) {
+            int cur = word.charAt(i) - 'a';
+            if(now.child[cur] == null) {
+                now.child[cur] = new TrieNode();
+            }
+            now = now.child[cur];
+        }
+        now.isWord = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    public boolean search(String word) {
+        // Write your code here
+        return searchHelper(word, 0, root);
+    }
+    public boolean searchHelper(String word, int index, TrieNode now) {
+        if (word.length() == index) {
+            return now.isWord;
+        }
+        if (word.charAt(index) == '.') {
+            for (int i = 0; i < 26; i++) {
+                if (now.child[i] != null && searchHelper(word, index + 1, now.child[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }else if (now.child[word.charAt(index) - 'a'] != null){
+            int cur = word.charAt(index) - 'a';
+            now = now.child[cur];
+            return searchHelper(word, index + 1, now);
+        }else {
+            return false;
+        }
+    }
+}
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary = new WordDictionary();
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");
