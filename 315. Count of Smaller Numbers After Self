@@ -1,0 +1,111 @@
+# 2016-09-14
+public class Solution {
+    class SegmentTree {
+        int start;
+        int end;
+        int count;
+        SegmentTree left, right;
+        public SegmentTree(int start, int end, int count) {
+            this.start = start;
+            this.end = end;
+            this.count = count;
+            this.left = this.right = null;
+        }
+    }
+    
+    SegmentTree root;
+    //给定[start, end] 建立一个SegmentTree
+    public SegmentTree build(int start, int end) {
+        if(start > end) {  // check core case
+            return null;
+        }
+        SegmentTree root = new SegmentTree(start, end, 0);
+        if (start != end) {
+            int mid = (start + end) / 2;
+            root.left = build(start, mid);
+            root.right = build(mid + 1,end);
+        }else {
+            root.count = 0;
+        }
+        return root;
+    }
+    
+    //给定[start, end] 求此范围内的数的总共个数
+    public int querySegmentTree(SegmentTree root, int start, int end) {
+        if(root.start == start && root.end == end) {
+            return root.count;
+        }
+        int mid = (root.start + root.end) / 2;
+        int leftcount = 0, rightcount = 0;
+        if (start <= mid) { //左半区有
+            if (end <= mid) {
+                leftcount = querySegmentTree(root.left, start, end);
+            }else {
+                leftcount = querySegmentTree(root.left, start, mid);
+            }
+        }
+        if (end > mid) { //右半区有
+            if (start > mid) {
+                rightcount = querySegmentTree(root.right, start, end);
+            }else {
+                rightcount = querySegmentTree(root.right, mid + 1, end);
+            }
+        }
+        return leftcount + rightcount;
+        
+    }
+    
+    //给定一个特定的值index, 将分段树中，这个数的个数增加value个
+    public void modifySegmentTree(SegmentTree root, int index, int value) {
+        if(root.start == index && root.end == index) {
+            root.count += value;
+            return;
+        }
+        int mid = (root.start + root.end) / 2;
+        if (index >= root.start && index <= mid) {
+            modifySegmentTree(root.left, index, value);
+        }else if (index <= root.end && index > mid) {
+            modifySegmentTree(root.right, index, value);
+        }
+        root.count = root.left.count + root.right.count;
+    }
+    public void reverse(int[] A){
+        for (int i = 0, j = A.length - 1; i < j; i++, j--) {
+            int temp = A[i];
+            A[i] = A[j];
+            A[j] = temp;
+        }
+    }
+    //Main函数
+    public List<Integer> countSmaller(int[] nums) {
+        reverse(nums);
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        //求数组中最小值
+        for (int i : nums) {
+            min = Math.min(min, i);
+            
+        }
+        //最小的值若小于零，则所有数都加上min的绝对值，让所有数都变为正数
+        if (min < 0) {
+            for (int i = 0; i < nums.length; i++) {
+                nums[i] -= min;
+            }
+        }
+        //求新数组的最大值，建立分段数
+        for (int i : nums) {
+            max = Math.max(max, i);
+        }
+        List<Integer> result = new ArrayList<>();
+        root = build(0, max);
+        int num;
+        for (int i = 0; i < nums.length; i++) {
+            modifySegmentTree(root, nums[i], 1);
+            num = 0;
+            if(nums[i] > 0) {
+                num = querySegmentTree(root, 0, nums[i] - 1);
+            }
+            result.add(0,num);
+        }
+        return result;
+    }
+}
