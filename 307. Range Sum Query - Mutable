@@ -1,0 +1,91 @@
+# 2016-09-14
+public class NumArray {
+    class SegmentTree {
+        int start;
+        int end;
+        int sum;
+        SegmentTree left;
+        SegmentTree right;
+        public SegmentTree(int start, int end, int sum){
+            this.start = start;
+            this.end = end;
+            this.sum = sum;
+            this.left = this.right = null;
+        }
+    }
+    public SegmentTree build(int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        SegmentTree root = new SegmentTree(start, end, 0);
+        int mid = (start + end) / 2;
+        if(start != end) {
+            root.left = build(start, mid);
+            root.right = build(mid + 1, end);
+        }else {
+            root.sum = 0;
+        }
+        return root;
+    }
+    SegmentTree root;
+
+    public NumArray(int[] nums) {
+        root = build(0, nums.length - 1);
+        for (int i = 0; i < nums.length; i++) {
+            modifyhelper(root, i, nums[i]);
+        }
+    }
+    public int queryhelper(SegmentTree root, int start, int end) {
+        // write your code here
+        if (root.start == start && root.end == end) {
+            return root.sum;
+        }
+        
+        int leftsum = 0, rightsum = 0;
+        int mid = (root.start + root.end) / 2;
+        if (start <= mid) { //左半区有
+            if (end <= mid) {
+                leftsum = queryhelper(root.left, start, end);
+            }else {
+                leftsum = queryhelper(root.left, start, mid);
+            }
+        }
+        if (end > mid) { //右半区有
+            if (start > mid) {
+                rightsum = queryhelper(root.right, start, end);
+            }else {
+                rightsum = queryhelper(root.right, mid + 1, end);
+            }
+        }
+        return leftsum + rightsum;
+    }
+    public void modifyhelper(SegmentTree root, int index, int value) {
+        // write your code here
+        if (root.start == index && root.end == index) {
+            root.sum = value;
+            return;
+        }
+        int mid = (root.start + root.end) / 2;
+        if (index >= root.start && index <= mid) {
+            modifyhelper(root.left, index, value);
+        }else if (index > mid && index <= root.end) {
+            modifyhelper(root.right, index, value);
+        }
+        root.sum = root.left.sum + root.right.sum;
+    }
+
+    void update(int i, int val) {
+        modifyhelper(root, i, val);
+    }
+
+    public int sumRange(int i, int j) {
+        return queryhelper(root, i, j);
+    }
+}
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray = new NumArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.update(1, 10);
+// numArray.sumRange(1, 2);
