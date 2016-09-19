@@ -1,0 +1,50 @@
+# 2016-09-18
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    public int maxPoints(Point[] points) {
+        if (points == null || points.length == 0) {
+            return 0;
+        }  
+        HashMap<Double, Integer> map = new HashMap<>();
+        double k;
+        int result = 1;
+        for (int i = 0; i < points.length; i++) {
+            //不同的i作为起点，要重新更新，
+            //因为起点不一样，即使斜率一样，也不一定在一条线上
+            map.clear();
+            //自己那个点，默认斜率就是无穷大
+            map.put((double) Integer.MAX_VALUE, 1);
+            int dup = 0;
+            for (int j = 0; j < points.length; j++) {
+                if (i != j) {
+                    if (points[j].x == points[i].x && points[j].y == points[i].y){
+                        dup++;
+                        continue;
+                    }
+                    if (points[j].x - points[i].x == 0) {
+                        k = (double) Integer.MAX_VALUE;
+                    }else {
+                        k = 0.0 + (double)(points[j].y -  points[i].y) / (double)(points[j].x - points[i].x);
+                    }
+                    if (!map.containsKey(k)) {
+                        map.put(k, 2);
+                    }else {
+                        map.put(k, map.get(k) + 1);
+                    }   
+                }
+            }
+            for (int value: map.values()) {
+                result = Math.max(result,value + dup);
+            }
+        }
+        return result;
+    }
+}
