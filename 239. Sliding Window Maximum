@@ -1,0 +1,78 @@
+# 2016-09-20
+public class Solution {
+//法二：Deque
+    void inQueue(Deque<Integer> deque, int num) {
+        while (!deque.isEmpty() && deque.peekLast() < num) {
+            deque.pollLast();
+        }
+        deque.offer(num);
+    }
+    
+    void outQueue(Deque<Integer> deque, int num) {
+        if (deque.peekFirst() == num) {
+            deque.pollFirst();
+        }
+    }
+    
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        // write your code here
+    	
+        Deque<Integer> deque = new ArrayDeque<Integer>();
+        if (nums.length == 0) {
+            return new int[0];
+        }
+        int[] ans = new int[nums.length - k + 1];
+        for (int i = 0; i < k - 1; i++) {
+            inQueue(deque, nums[i]);
+        }
+        
+        for(int i = k - 1; i < nums.length; i++) {
+            inQueue(deque, nums[i]);
+            ans[i - k + 1] = deque.peekFirst();
+            outQueue(deque, nums[i - k + 1]);
+        }
+        return ans;
+    }
+}
+// //法一：maxHeap 时间复杂度略高
+//     public int[] maxSlidingWindow(int[] nums, int k) {
+//         Comparator<Integer> newOrder = new Comparator<Integer>() {
+//             public int compare(Integer n1, Integer n2) {
+//                 return n2.compareTo(n1);
+//             }
+//         };
+//         PriorityQueue<Integer> maxHeap = new PriorityQueue<>(1, newOrder);
+        
+//         if (nums == null || nums.length == 0 || k == 0) {
+//             return new int[0];
+//         }
+//         int[] result = new int[nums.length - k + 1];
+        
+        
+//         int max = nums[0];
+//         for (int i = 0; i< nums.length; i++) {
+//             if (i != 0) {
+//                 if (nums[i] > max){
+//                     maxHeap.offer(max);
+//                     max = nums[i];
+//                 }else {
+//                     maxHeap.offer(nums[i]);
+//                 }
+//             }
+//             if (i >= k) {
+//                 if (max == nums[i - k]) {
+//                     if (maxHeap.size() > 0) {
+//                         max = maxHeap.poll();
+//                     }
+//                 }else {
+//                     maxHeap.remove(nums[i - k]);
+//                 }
+                
+//             }
+//             if (i + 1 >= k){
+//                 result[i + 1 - k] = max;
+//             }
+//         }
+//         return result;
+//     }
+// }
