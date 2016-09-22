@@ -1,0 +1,30 @@
+# 2016-09-21
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        HashSet<Character> set = new HashSet<>();
+        int start = 0;
+        int end;
+        int max = Integer.MIN_VALUE;
+        for (end = 0; end < s.length(); end++) {
+            if (set.contains(s.charAt(end))) { 
+                // set里面有，说明这个点之前的是答案之一，先求一个长度
+                if (max < end - start) {
+                    max = end - start;
+                }
+                // 同时将start移到与结尾相同的那个元素
+                // 例如：ACBDEB 将start移到第一个B的位置，同时将前面AC从set中除去
+                while (s.charAt(start) != s.charAt(end)) {
+                    set.remove(s.charAt(start));
+                    start++;
+                }
+                start++;
+            }else { // set里面没有，就可以加
+                set.add(s.charAt(end));
+            }
+        }
+        return Math.max(max, end - start);
+    }
+}
