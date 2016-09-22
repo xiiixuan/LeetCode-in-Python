@@ -1,0 +1,48 @@
+# 2016-09-21
+public class Solution {
+    public String minWindow(String source, String target) {
+        if (source == null || source.length() == 0) {
+            return "";
+        }
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < target.length(); i++) {
+            if (!map.containsKey(target.charAt(i))) {
+                map.put(target.charAt(i), 1);
+            }else {
+                map.put(target.charAt(i), map.get(target.charAt(i)) + 1);
+            }
+        }
+        
+        int start = 0; 
+        int end;
+        int count = 0;
+        int minLen = Integer.MAX_VALUE;
+        int minStart = 0;
+        for (end = 0; end < source.length(); end++) {
+            if (map.containsKey(source.charAt(end))) {
+                map.put(source.charAt(end), map.get(source.charAt(end)) - 1);
+                if (map.get(source.charAt(end)) >= 0) {
+                    count++;
+                }
+                while (count == target.length()) {
+                    if (end - start + 1 < minLen) {
+                        minLen = end - start + 1;
+                        minStart = start;
+                    }
+                    if (map.containsKey(source.charAt(start))) {
+                        map.put(source.charAt(start), map.get(source.charAt(start)) + 1);
+                        if (map.get(source.charAt(start)) > 0) {
+                            count--;
+                        }
+                    }
+                    start++;
+                }
+            }
+            
+        }
+        if (minLen > source.length()) {
+            return "";
+        }
+        return source.substring(minStart, minStart + minLen);
+    }
+}
