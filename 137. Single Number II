@@ -1,0 +1,22 @@
+# 2016-10-05
+public class Solution {
+    public int singleNumber(int[] A) {
+        if (A == null || A.length == 0) {
+            return 0;
+        }
+        int result = 0;
+        int[] bits = new int[32];
+        for(int i = 0; i < 32; i++) {
+            for (int j = 0; j < A.length; j++) {
+                // A[j] / (2^i) 在与1 表示只有最后一位 其实就是求A[j]换为二进制之后 第i位是什么
+                bits[i] += (A[j] >> i) & 1; 
+            }
+            bits[i] %= 3;
+        }
+        
+        for (int i = 0; i < 32; i++) {
+            result |= bits[i] << i;
+        }
+        return result;
+    }
+}
