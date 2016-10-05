@@ -1,0 +1,44 @@
+# 2016-10-05
+public class Solution {
+    public int[] singleNumber(int[] A) {
+        //法一：放到hashmap里面，最后找数量为1的，但需要O(n)空间
+        // List<Integer> result = new ArrayList<>();
+        // if (A == null || A.length == 0) {
+        //     return result;
+        // }
+        // HashMap<Integer, Integer> map = new HashMap<>();
+        // for (int i = 0; i < A.length; i++) {
+        //     if (map.containsKey(A[i])) {
+        //         map.put(A[i], map.get(A[i]) + 1);
+        //     }else {
+        //         map.put(A[i], 1);
+        //     }
+        // }
+        // for (Integer key: map.keySet()) {
+        //     if (map.get(key) == 1) {
+        //         result.add(key);
+        //     }
+        // }
+        // return result;
+        
+        //法二：位运算
+        int[] result = new int[2];
+        if (A == null || A.length == 0) {
+            return result;
+        }
+        int diff = 0;
+        for (int i = 0; i < A.length; i++) {
+            diff ^= A[i];
+        }
+        int n = diff & (-diff);
+        for (int i = 0; i < A.length; i++) {
+            if ((A[i] & n) == 0) {
+                result[0] ^= A[i];
+            }else {
+                result[1] ^= A[i];
+            }
+        }
+        
+        return result;
+    }
+}
