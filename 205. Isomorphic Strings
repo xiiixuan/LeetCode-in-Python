@@ -1,0 +1,27 @@
+# 2016-10-09
+public class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        if ((s == null && t == null) || (s.length() == 0 && t.length() == 0)) {
+            return true;
+        }else if (s == null || t == null) {
+            return false;
+        }
+        if (s.length() != t.length()) {
+            return false;
+        }
+        
+        HashMap<Character, Character> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            //key当中没有s的第i位，而且value中没有t的第i位（避免两个共同map到一个上面）
+            if (!map.containsKey(s.charAt(i)) && !map.containsValue(t.charAt(i))) {
+                map.put(s.charAt(i), t.charAt(i));
+            }else if (map.containsKey(s.charAt(i)) && (map.get(s.charAt(i)) != t.charAt(i))) {
+                //之前存在map，但是再一次遇到时与之前map不一样的情况
+                return false;
+            }else if (!map.containsKey(s.charAt(i))) { //两个map到一个的情况
+                return false;
+            }
+        }
+        return true;
+    }
+}
