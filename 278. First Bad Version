@@ -22,21 +22,23 @@ class Solution(object):
 
 
 //java
-public class Solution {
-    public int findMin(int[] nums) {
-        if (nums == null || nums.length == 0) {
-            return 0;
-        }
-        int start = 0;
-        int end = nums.length - 1;
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int start = 1;
+        int end = n;
         while (start + 1 < end) {
             int mid = start + (end - start) / 2;
-            if (nums[mid] > nums[end]) {
-                start = mid;
-            }else {
+            if (isBadVersion(mid)) {
                 end =mid;
+            }else {
+                start = mid;
             }
         }
-        return Math.min(nums[start], nums[end]);
+        if (isBadVersion(start)) {
+            return start;
+        }else if (isBadVersion(end)) {
+            return end;
+        }
+        return n + 1;
     }
 }
