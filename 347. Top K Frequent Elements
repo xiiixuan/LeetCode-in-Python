@@ -1,0 +1,39 @@
+# 2016-10-26
+public class Solution {
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0 ; i < nums.length; i++) {
+            if (map.containsKey(nums[i])) {
+                map.put(nums[i], map.get(nums[i]) + 1);
+            }else {
+                map.put(nums[i], 1);
+            }
+        }
+        List<Node> items = new ArrayList<>();
+        for (Integer num : map.keySet()) {
+            items.add(new Node(num, map.get(num)));
+        }
+        Comparator<Node> newOrder = new Comparator<Node> (){
+          public int compare(Node n1, Node n2) {
+              return n2.time - n1.time;
+          }
+        };
+        PriorityQueue<Node> maxHeap = new PriorityQueue<Node>(k, newOrder);
+        for (Node node: items) {
+            maxHeap.offer(node);
+        }
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < k; i++) {
+            result.add(maxHeap.poll().num);
+        }
+        return result;
+    }
+}
+class Node {
+    int num;
+    int time;
+    public Node(int num, int time){
+        this.num = num;
+        this.time = time;
+    }
+}
