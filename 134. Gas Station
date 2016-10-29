@@ -1,0 +1,58 @@
+# 2016-10-28
+public class Solution {
+//Greedy 算法
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        if (gas == null || gas.length == 0 || cost == null || cost.length == 0) {
+            return -1;
+        }
+        int sum = 0;
+        int total = 0;
+        int index = -1;
+        for (int i = 0; i < gas.length; i++) {
+            sum += gas[i] - cost[i];
+            total += gas[i] - cost[i];
+            if (sum < 0) {
+                index = i;
+                sum = 0;
+            }
+        }
+        if (total < 0) {
+            return -1;
+        }
+        return index + 1;
+    }
+}
+    
+//暴力算法 O（n^2）;
+//     public int canCompleteCircuit(int[] gas, int[] cost) {
+//         // write your code here
+//         int result =  -1;
+//         int leftgas = 0;
+//         for (int i = 0; i < gas.length; i++) {
+//             if (gas[i] < cost[i]) {
+//                 continue;
+//             }
+//             leftgas = gas[i] - cost[i];
+//             result = leftGas(gas, cost, i, leftgas);
+//             if (result == -1) {
+//                 continue;
+//             }else {
+//                 return i;
+//             }
+//         }
+//         return result;
+//     }
+//     public int leftGas(int[] gas, int[] cost, int index, int leftgas) {
+//         for (int j = 1; j <  gas.length; j++) {
+//             if (index + j >= gas.length) {
+//                 leftgas += gas[index + j - gas.length] - cost[index + j - gas.length];
+//             }else {
+//                 leftgas += gas[index + j] - cost[index + j];
+//             }
+//             if (leftgas < 0) {
+//                 return -1;
+//             }
+//         }
+//         return leftgas;
+//     }
+// }
