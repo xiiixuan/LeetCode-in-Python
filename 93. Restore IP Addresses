@@ -1,0 +1,42 @@
+# 2016-11-02
+public class Solution {
+    public ArrayList<String> restoreIpAddresses(String s) {
+        // Write your code here
+        ArrayList<String> result = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
+        helper(result, list, s, 0);
+        return result;
+    }
+    public void helper(ArrayList<String> result, ArrayList<String> list, 
+                        String s,int start) {
+        if (list.size() == 4) {
+            if(start != s.length()) {
+                return;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (String item: list) {
+                sb.append(item);
+                sb.append('.');
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            result.add(sb.toString());
+            return;
+        }
+        for (int i = start; i < start + 3 && i < s.length(); i++) {
+            String temp = s.substring(start, i + 1);
+            if (isValid(temp)) {
+                list.add(temp);
+                helper(result, list, s, i + 1);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+    //判断是否为有效字段0-255之间，其中若开头为0，必须只是0，不可以是001，010之类的
+    public boolean isValid(String s) {
+        if (s.charAt(0) == '0') {
+            return s.equals("0");
+        }
+        int num = Integer.valueOf(s);
+        return num >= 0 && num <= 255;
+    }
+}
