@@ -1,0 +1,59 @@
+# 2016-11-04
+public class Solution {
+    public int trapRainWater(int[][] heights) {
+        if(heights.length == 0)          return 0;
+        Comparator<Number> newOrder = new Comparator<Number>() {
+            public int compare(Number n1, Number n2) {
+                return n1.val- n2.val;
+            }
+        };
+        int m = heights.length;
+        int n = heights[0].length;
+        boolean[][] visited = new boolean[m][n];
+        
+        PriorityQueue<Number> minHeap = new PriorityQueue<>(1, newOrder);
+        //将四个边的点放进去
+        for (int i = 0; i < m; i++) {
+            minHeap.offer(new Number(i, 0, heights[i][0]));
+            visited[i][0] = true;
+            minHeap.offer(new Number(i, n - 1, heights[i][n - 1]));
+            visited[i][n - 1] =true;
+        }
+        for (int j = 0; j < n; j++) {
+            minHeap.offer(new Number(0, j, heights[0][j]));
+            visited[0][j] = true;
+            minHeap.offer(new Number(m - 1, j, heights[m - 1][j]));
+            visited[m - 1][j] = true;
+        }
+        
+        int[] dx = {0, 0, 1, -1};
+        int[] dy = {1, -1, 0, 0};
+        Number minNum;
+        int volumn = 0; 
+        while (!minHeap.isEmpty()) {
+            minNum = minHeap.poll();
+            for (int i = 0; i < 4; i++) {
+                int nx = minNum.x + dx[i];
+                int ny = minNum.y + dy[i];
+                if(nx >= 0 && nx < m && ny >=0 && ny < n && visited[nx][ny] == false) {
+                    minHeap.offer(new Number(nx, ny, Math.max(minNum.val, heights[nx][ny])));
+                    visited[nx][ny] = true;
+                    volumn += Math.max(minNum.val - heights[nx][ny], 0);
+                }
+            }
+        }
+        return volumn;
+        
+    }
+    
+}
+class Number {
+    int x;
+    int y;
+    int val;
+    public Number(int x, int y, int val){
+        this.x = x;
+        this.y = y;
+        this.val = val;
+    }
+} 
