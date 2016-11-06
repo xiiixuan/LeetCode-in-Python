@@ -1,0 +1,33 @@
+# 2016-11-05
+//将颠倒顺序的元素放到一起，输出
+//hashmap key:字母排好序的string, value: 所有符合的元素
+//结果就是将map的value全部输出
+
+public class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        if (strs == null || strs.length == 0) {
+            return result;
+        }
+        HashMap<String, List<String>> map = new HashMap<>();
+        for (int i = 0; i < strs.length; i++) {
+            //将元素按字母顺序修改
+            char[] c = strs[i].toCharArray();
+            Arrays.sort(c);
+            String s = String.valueOf(c);
+            if (map.containsKey(s)) {
+                List<String> list = map.get(s);
+                list.add(strs[i]);
+                map.put(s, list);
+            }else {
+                List<String> list = new ArrayList<>();
+                list.add(strs[i]);
+                map.put(s, list);
+            }
+        }
+        for (List<String> item: map.values()) {
+            result.add(item);
+        }
+        return result;
+    }
+}
