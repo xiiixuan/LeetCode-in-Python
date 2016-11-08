@@ -1,0 +1,56 @@
+# 2016-11-07
+public class RandomizedCollection {
+    HashMap<Integer, TreeSet<Integer>> map;
+    ArrayList<Integer> collections;
+    /** Initialize your data structure here. */
+    public RandomizedCollection() {
+        map = new HashMap<>();
+        collections = new ArrayList<>();
+    }
+    
+    /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
+    public boolean insert(int val) {
+        TreeSet<Integer> temp = map.get(val);
+        if (temp == null) {
+            temp = new TreeSet<Integer>();
+        }
+        temp.add(collections.size());
+        map.put(val, temp);
+        collections.add(val);
+        return temp.size() == 1;
+    }
+    
+    /** Removes a value from the collection. Returns true if the collection contained the specified element. */
+    public boolean remove(int val) {
+        TreeSet<Integer> temp = map.get(val);
+        if (temp == null || temp.isEmpty()){
+            return false;
+        }else {
+            int index = temp.pollLast(); //将这个数最后一个位置的index拿出来
+            int tailNum = collections.get(collections.size() - 1); //找出collection里面最后一个元素，要将这个元素放到删除的点的位置，否则random的size不对
+            TreeSet<Integer> tailSet = map.get(tailNum);
+            if (tailNum != val) {
+                collections.set(index, tailNum);
+                tailSet.pollLast();
+                tailSet.add(index);
+            }
+            collections.remove(collections.size() - 1);
+            return true;
+        }
+    }
+    
+    /** Get a random element from the collection. */
+    public int getRandom() {
+        Random rd = new Random();
+        int target = rd.nextInt(collections.size());
+        return collections.get(target);
+    }
+}
+
+/**
+ * Your RandomizedCollection object will be instantiated and called as such:
+ * RandomizedCollection obj = new RandomizedCollection();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
