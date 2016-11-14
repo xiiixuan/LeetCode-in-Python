@@ -1,0 +1,40 @@
+# 2016-11-13
+public class Solution {
+    public List<int[]> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<int[]> result = new ArrayList<>();
+        if (nums1 == null || nums2 == null || nums1.length == 0 || nums2.length == 0 || k <= 0) {
+            return result;
+        }
+        Comparator<Entry> newOrder = new Comparator<Entry>(){
+           public int compare(Entry e1, Entry e2) {
+               return e1.num - e2.num;
+           } 
+        };
+        int m = nums1.length;
+        int n = nums2.length;
+        PriorityQueue<Entry> minHeap = new PriorityQueue<>(k,newOrder);
+        for (int j = 0; j < n; j++) {
+            Entry temp = new Entry(nums1[0] + nums2[j], 0, j);
+            minHeap.offer(temp);
+        }
+        //此方法就不用放进去k*k个了， 因为排序了，所以加完所有 nums1[0]+nums[j], 下一个可能比他们小的只可能是 nums[1]+nums[j]
+        for (int i = 0; i < Math.min(k, m*n); i++) {
+            Entry cur = minHeap.poll();
+            result.add(new int[] {nums1[cur.fir], nums2[cur.sed]});
+            if (cur.fir == m - 1) continue;
+            minHeap.offer(new Entry(nums1[cur.fir + 1] + nums2[cur.sed], cur.fir + 1, cur.sed));
+        }
+        return result;
+    }
+    
+}
+class Entry {
+    int num;
+    int fir;
+    int sed;
+    public Entry(int num, int fir, int sed){
+        this.num = num;
+        this.fir = fir;
+        this.sed = sed;
+    }
+}
