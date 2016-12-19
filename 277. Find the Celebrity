@@ -1,0 +1,21 @@
+# 2016-12-18
+/* The knows API is defined in the parent class Relation.
+      boolean knows(int a, int b); */
+
+public class Solution extends Relation {
+    public int findCelebrity(int n) {
+        int candidate = 0;
+        for (int i = 1; i < n; i++) {
+            //从头开始遍历，如果遇到了，true， 说明此candidated 认识i，它就不是名人了（名人不能认识任何人）， i才有可能是名人， 而中间任何是false的情况也都不可能是名人，因为有candidate不认识i，说明此时的i不是名人
+            if (knows(candidate, i)) {
+                candidate = i;
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            if (candidate != i && (!knows(i, candidate) || knows(candidate, i))) {
+                return -1;
+            }
+        }
+        return candidate;
+    }
+}
