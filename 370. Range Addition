@@ -1,0 +1,23 @@
+# 2016-12-18
+//每个start的地方，加上这个数，end的下一个地方，前去这个数，
+//最终结果，每个数，就是前面所有加上这个数的和
+public class Solution {
+    public int[] getModifiedArray(int length, int[][] updates) {
+        int[] result = new int[length];
+        for (int[] update: updates) { //O(k)
+            int start = update[0];
+            int end = update[1];
+            int val = update[2];
+            result[start] += val;
+            if (end + 1 < length) {
+                result[end + 1] -=val;
+            }
+        }
+        int sum = 0;
+        for (int i = 0; i < length; i++) { //O(N)
+            sum += result[i];
+            result[i] = sum;
+        }
+        return result;
+    }
+}
