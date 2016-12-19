@@ -1,3 +1,56 @@
+# 2016-12-18
+public class RandomizedSet {
+    HashMap<Integer, Integer> map;
+    ArrayList<Integer> collections;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        map = new HashMap<>();
+        collections = new ArrayList<>();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if (map.containsKey(val)) {
+            return false;
+        }else {
+            map.put(val, collections.size());
+            collections.add(val);
+            return true;
+        }
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if (!map.containsKey(val)) {
+            return false;
+        }else {
+            int index = map.get(val);
+            int tail = collections.get(collections.size() - 1);
+            if (val != tail){
+                map.put(tail, index);
+                collections.set(index, tail);
+            }
+            map.remove(val);
+            collections.remove(collections.size() - 1);
+            return true;
+        }
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+        Random rd = new Random();
+        return collections.get(rd.nextInt(collections.size()));
+    }
+}
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet obj = new RandomizedSet();
+ * boolean param_1 = obj.insert(val);
+ * boolean param_2 = obj.remove(val);
+ * int param_3 = obj.getRandom();
+ */
+
 # 2016-11-07
 public class RandomizedCollection {
     HashMap<Integer, TreeSet<Integer>> map;
