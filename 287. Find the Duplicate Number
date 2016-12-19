@@ -1,0 +1,22 @@
+# 2016-12-18
+public class Solution {
+    public int findDuplicate(int[] nums) {
+        //just like linked-list cycle II
+        // 一步是 nums[]; 两步是 nums[nums[]]
+        if (nums == null || nums.length <= 1) return -1;
+        int slow = nums[0];
+        int fast = nums[nums[0]];
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }
+        //说明有重复了，定位slow为开始的地方， fast回到起点
+        fast = 0;
+        //找重复
+        while (slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+}
